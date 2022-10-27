@@ -1,0 +1,27 @@
+{
+    "n": {
+        "$numberInt": "0"
+    },
+    "writeErrors": [
+        {
+            "index": {
+                "$numberInt": "0"
+            },
+            "code": {
+                "$numberInt": "11000"
+            },
+            "errmsg": "E11000 duplicate key error collection: test.test index: email dup key: { email: \"joao@silva.com\" }",
+            "keyPattern": {
+                "email": {
+                    "$numberInt": "1"
+                }
+            },
+            "keyValue": {
+                "email": "joao@silva.com"
+            }
+        }
+    ],
+    "ok": {
+        "$numberDouble": "1.0"
+    }
+}

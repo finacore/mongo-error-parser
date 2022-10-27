@@ -1,0 +1,17 @@
+{
+    "propertyName": "valor",
+    "details": [
+        {
+            "operatorName": "minimum",
+            "specifiedAs": {
+                "minimum": {
+                    "$numberInt": "1"
+                }
+            },
+            "reason": "comparison failed",
+            "consideredValue": {
+                "$numberDouble": "0.0"
+            }
+        }
+    ]
+}

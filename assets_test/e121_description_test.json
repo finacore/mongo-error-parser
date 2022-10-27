@@ -1,0 +1,18 @@
+{
+    "propertyName": "quantidade",
+    "description": "The value should be between 0 and 5",
+    "details": [
+        {
+            "operatorName": "maximum",
+            "specifiedAs": {
+                "maximum": {
+                    "$numberInt": "5"
+                }
+            },
+            "reason": "comparison failed",
+            "consideredValue": {
+                "$numberInt": "6"
+            }
+        }
+    ]
+}
