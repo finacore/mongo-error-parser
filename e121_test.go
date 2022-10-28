@@ -2,7 +2,6 @@ package mongoerrorparser
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -20,12 +19,7 @@ var e121_error = map[string]string{
 }
 
 func read_errors_e121(f string) []byte {
-
-	// Open our jsonFile
-	jsonFile, _ := os.Open(e121_error[f])
-	defer jsonFile.Close()
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := os.ReadFile(e121_error[f])
 
 	return byteValue
 }

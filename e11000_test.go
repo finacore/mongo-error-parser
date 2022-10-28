@@ -2,7 +2,6 @@ package mongoerrorparser
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -10,11 +9,7 @@ import (
 )
 
 func read_error_e11000(f string) []byte {
-	// Open our jsonFile
-	jsonFile, _ := os.Open("assets_test/e11000_test.json")
-	defer jsonFile.Close()
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := os.ReadFile("assets_test/e11000_test.json")
 
 	return byteValue
 }
