@@ -29,7 +29,7 @@ func TestNewE121(t *testing.T) {
 	var root interface{}
 
 	json.Unmarshal(data, &root)
-	e121 := NewE121(root)
+	e121 := newE121(root)
 
 	assert.NotNil(t, e121)
 	assert.Len(t, e121.Runner, 1)
@@ -42,7 +42,7 @@ func TestE121_deleteElement(t *testing.T) {
 
 	json.Unmarshal(data, &root)
 
-	e121 := NewE121(root)
+	e121 := newE121(root)
 	e121.deleteElement()
 
 	assert.Len(t, e121.Runner, 0)
@@ -54,7 +54,7 @@ func TestE121_addAll(t *testing.T) {
 
 	json.Unmarshal(data, &root)
 
-	e121 := NewE121(root)
+	e121 := newE121(root)
 	e121.addAll()
 
 	//root + 2
@@ -67,7 +67,7 @@ func TestE121_addChildren(t *testing.T) {
 
 	json.Unmarshal(data, &root)
 
-	e121 := NewE121(root)
+	e121 := newE121(root)
 	e121.addChildren()
 
 	//root + 2
@@ -80,7 +80,7 @@ func TestE121_addError(t *testing.T) {
 
 	json.Unmarshal(data, &root)
 
-	e121 := NewE121(root)
+	e121 := newE121(root)
 	e121.addError("test", "Hello world!")
 
 	assert.Len(t, e121.Errors, 1)
@@ -123,7 +123,7 @@ func TestE121_getReason(t *testing.T) {
 
 			json.Unmarshal(data, &root)
 
-			e121 := NewE121(root)
+			e121 := newE121(root)
 			reason := e121.getReason()
 
 			assert.Equal(t, reason, tt.want)
@@ -155,7 +155,7 @@ func TestE121_getErrorMessage(t *testing.T) {
 
 			json.Unmarshal(data, &root)
 
-			e121 := NewE121(root)
+			e121 := newE121(root)
 			err := e121.getErrorMessage(e121.Runner[0].(map[string]interface{}))
 
 			assert.Equal(t, err, tt.want)
@@ -192,7 +192,7 @@ func TestE121_processInterface(t *testing.T) {
 
 			json.Unmarshal(data, &root)
 
-			e121 := NewE121(root)
+			e121 := newE121(root)
 			e121.processInterface()
 
 			if tt.hasErr {
@@ -235,7 +235,7 @@ func TestE121_Run(t *testing.T) {
 
 			json.Unmarshal(data, &root)
 
-			e121 := NewE121(root)
+			e121 := newE121(root)
 			e121.Run()
 
 			assert.Len(t, e121.Runner, 0)

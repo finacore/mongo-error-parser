@@ -4,22 +4,15 @@ import (
 	"github.com/gsdenys/cerr"
 )
 
-// E121 Error represents the model validation error, that occur when the scheme
-// validation  fail in the moment of insert our update the data.
-//
-// e.g. "specified string length was not satisfied"
-//
-// This data structure has as main objective to allows realize a breadth search
-// in this interface that is better described at method Run.
-type E121 struct {
-	Errors []*cerr.ValidationError
-	Runner []interface{}
+// e121 data structure to parser the mongodb validation error for error code 121
+type e121 struct {
+	validation
 }
 
-// NewE121 allows to create a new E121 data structure prepared to be executed. As
+// newE121 allows to create a new E121 data structure prepared to be executed. As
 // input parameter, this function receives the interface to be parsed.
-func NewE121(root interface{}) *E121 {
-	e := &E121{}
+func newE121(root interface{}) *e121 {
+	e := &e121{}
 	e.Runner = append(e.Runner, root)
 
 	return e
@@ -27,14 +20,14 @@ func NewE121(root interface{}) *E121 {
 
 // deleteElement removes the first element of execution array, providing an
 // implementation of a pointer at the breadth search algorithm.
-func (e *E121) deleteElement() {
+func (e *e121) deleteElement() {
 	e.Runner = e.Runner[1:]
 }
 
 // addAll enables to add all elements of the pointered element to the end of
 // array. Note that this method just be used case the pointered element is an
 // implementation off []interface{}.
-func (e *E121) addAll() {
+func (e *e121) addAll() {
 	children := e.Runner[0].([]interface{})
 	for index := range children {
 		e.Runner = append(e.Runner, children[index])
@@ -44,7 +37,7 @@ func (e *E121) addAll() {
 // addChildren adds all object's elements to the processing array. Different of
 // the addAll, this method requires that the interface be of a
 // type map[string]interface{}
-func (e *E121) addChildren() {
+func (e *e121) addChildren() {
 	data := e.Runner[0].(map[string]interface{})
 
 	for _, v := range data {
@@ -53,13 +46,16 @@ func (e *E121) addChildren() {
 }
 
 // addError add a new error to the error array
-func (e *E121) addError(field string, message string) {
-	e.Errors = append(e.Errors, cerr.CreateValidationError(field, message))
+func (e *e121) addError(field string, message string) {
+	e.Errors = append(
+		e.Errors,
+		cerr.CreateValidationError(field, message).Status(422),
+	)
 }
 
 // getReason returns the reason stored inside the details map. By now, this
 // function just accept one reason for each field.
-func (e *E121) getReason() []string {
+func (e *e121) getReason() []string {
 	var reason []string
 	data := e.Runner[0].(map[string]interface{})
 	details := data["details"].([]interface{})
@@ -79,7 +75,7 @@ func (e *E121) getReason() []string {
 // priority is the message that the user has set to the mongodb in the moment of
 // create the constraint. In case of this not exist, the reason finding process
 // will be started
-func (e *E121) getErrorMessage(data map[string]interface{}) []string {
+func (e *e121) getErrorMessage(data map[string]interface{}) []string {
 	description := data["description"]
 
 	if description != nil {
@@ -94,7 +90,7 @@ func (e *E121) getErrorMessage(data map[string]interface{}) []string {
 // just one more node.
 // if this is just one more error, their children ill be add to the process list,
 // other else the error will be created and add to the error array
-func (e *E121) processInterface() {
+func (e *e121) processInterface() {
 	data := e.Runner[0].(map[string]interface{})
 	propertyName := data["propertyName"]
 
@@ -111,8 +107,9 @@ func (e *E121) processInterface() {
 
 // Run function to execute the parser over the E121 mongodb error. This function
 // perform an parser over BSON error and store all errors inside their Errors
-// data structure
-func (e *E121) Run() {
+// data structure. As this function perform a breadth search, its can be a bit
+// slower then the others parsers.
+func (e *e121) Run() *e121 {
 	for len(e.Runner) > 0 {
 		switch e.Runner[0].(type) {
 		case string:
@@ -125,4 +122,6 @@ func (e *E121) Run() {
 			e.deleteElement()
 		}
 	}
+
+	return e
 }
