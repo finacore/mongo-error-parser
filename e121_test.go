@@ -1,4 +1,4 @@
-package mongoerrorparser
+package meparser
 
 import (
 	"encoding/json"
