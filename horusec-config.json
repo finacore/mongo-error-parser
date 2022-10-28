@@ -47,7 +47,10 @@
     "horusecCliRepositoryName": "",
     "horusecCliReturnErrorIfFoundVulnerability": true,
     "horusecCliRiskAcceptHashes": [
-
+      "b63cbd73b5c5dcdbbe1093c2c6a53e3c92d9610d9a1dc8c506d0cd23c1f1f1f7",
+      "67f4804d6611db1f45aea3c34c3e918d5c5431fef8d46d63640089203cc79643",
+      "89d8dc2601cca80b3edf008b209561b1958356459eda702dc9f0124aa2123726",
+      "548c53b6d71ca2c48df5432077438cbbc4c0b1b79b443ec604d390713becc8e3"
     ],
     "horusecCliSeveritiesToIgnore": [],
     "horusecCliShowVulnerabilitiesTypes": [

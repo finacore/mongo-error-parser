@@ -7,6 +7,8 @@ package meparser
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"log"
 
 	"github.com/gsdenys/cerr"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -35,7 +37,9 @@ func toMongoException(err error) mongo.WriteException {
 func toErrorInterface(myError mongo.WriteException) interface{} {
 	var jsonError interface{}
 
-	json.Unmarshal([]byte(myError.Raw.String()), &jsonError)
+	if err := json.Unmarshal([]byte(myError.Raw.String()), &jsonError); err != nil {
+		log.Println(fmt.Errorf("the error is not parsable: %v", err))
+	}
 
 	return jsonError
 }

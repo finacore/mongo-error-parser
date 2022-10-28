@@ -28,7 +28,10 @@ func TestNewE121(t *testing.T) {
 	data := read_errors_e121("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
+
 	e121 := newE121(root)
 
 	assert.NotNil(t, e121)
@@ -40,7 +43,9 @@ func TestE121_deleteElement(t *testing.T) {
 	data := read_errors_e121("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
 
 	e121 := newE121(root)
 	e121.deleteElement()
@@ -52,7 +57,9 @@ func TestE121_addAll(t *testing.T) {
 	data := read_errors_e121("array")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
 
 	e121 := newE121(root)
 	e121.addAll()
@@ -65,7 +72,9 @@ func TestE121_addChildren(t *testing.T) {
 	data := read_errors_e121("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
 
 	e121 := newE121(root)
 	e121.addChildren()
@@ -78,25 +87,15 @@ func TestE121_addError(t *testing.T) {
 	data := read_errors_e121("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
 
 	e121 := newE121(root)
 	e121.addError("test", "Hello world!")
 
 	assert.Len(t, e121.Errors, 1)
 }
-
-// func TestE121_getReason(t *testing.T) {
-// 	data := read_errors_e121("reason")
-// 	var root interface{}
-
-// 	json.Unmarshal(data, &root)
-
-// 	e121 := NewE121(root)
-// 	reason := e121.getReason()
-
-// 	assert.Equal(t, reason, "comparison failed")
-// }
 
 func TestE121_getReason(t *testing.T) {
 	tests := []struct {
@@ -121,7 +120,9 @@ func TestE121_getReason(t *testing.T) {
 			data := read_errors_e121(tt.file)
 			var root interface{}
 
-			json.Unmarshal(data, &root)
+			if err := json.Unmarshal(data, &root); err != nil {
+				t.Fail()
+			}
 
 			e121 := newE121(root)
 			reason := e121.getReason()
@@ -153,7 +154,9 @@ func TestE121_getErrorMessage(t *testing.T) {
 			data := read_errors_e121(tt.file)
 			var root interface{}
 
-			json.Unmarshal(data, &root)
+			if err := json.Unmarshal(data, &root); err != nil {
+				t.Fail()
+			}
 
 			e121 := newE121(root)
 			err := e121.getErrorMessage(e121.Runner[0].(map[string]interface{}))
@@ -190,7 +193,9 @@ func TestE121_processInterface(t *testing.T) {
 			data := read_errors_e121(tt.file)
 			var root interface{}
 
-			json.Unmarshal(data, &root)
+			if err := json.Unmarshal(data, &root); err != nil {
+				t.Fail()
+			}
 
 			e121 := newE121(root)
 			e121.processInterface()
@@ -233,7 +238,9 @@ func TestE121_Run(t *testing.T) {
 			data := read_errors_e121(tt.file)
 			var root interface{}
 
-			json.Unmarshal(data, &root)
+			if err := json.Unmarshal(data, &root); err != nil {
+				t.Fail()
+			}
 
 			e121 := newE121(root)
 			e121.Run()

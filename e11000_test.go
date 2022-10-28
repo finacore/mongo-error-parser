@@ -18,7 +18,10 @@ func TestNewE11000(t *testing.T) {
 	data := read_error_e11000("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
+
 	e11000 := newE11000(root)
 
 	assert.NotNil(t, e11000)
@@ -30,7 +33,10 @@ func TestE11000_getWriteErrors(t *testing.T) {
 	data := read_error_e11000("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
+
 	e11000 := newE11000(root)
 	wr := e11000.getWriteErrors()
 
@@ -41,7 +47,10 @@ func TestE11000_Run(t *testing.T) {
 	data := read_error_e11000("default")
 	var root interface{}
 
-	json.Unmarshal(data, &root)
+	if err := json.Unmarshal(data, &root); err != nil {
+		t.Fail()
+	}
+
 	e11000 := newE11000(root)
 	e11000.Run()
 
