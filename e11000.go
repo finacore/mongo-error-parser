@@ -3,11 +3,11 @@ package mongoerrorparser
 import (
 	"fmt"
 
-	ce "github.com/finacore/commons-errors"
+	"github.com/gsdenys/cerr"
 )
 
 type E11000 struct {
-	Errors []*ce.ValidationError
+	Errors []*cerr.ValidationError
 	Runner []interface{}
 }
 
@@ -32,6 +32,6 @@ func (e *E11000) Run() {
 
 	for k, v := range writeErros {
 		message := fmt.Sprintf("%s already exist and cannot be duplicated", v.(string))
-		e.Errors = append(e.Errors, ce.CreateValidationError(k, message))
+		e.Errors = append(e.Errors, cerr.CreateValidationError(k, message))
 	}
 }

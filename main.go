@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	ce "github.com/finacore/commons-errors"
+	"github.com/gsdenys/cerr"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -23,7 +23,7 @@ func toErrorInterface(myError mongo.WriteException) interface{} {
 	return jsonError
 }
 
-func Parse(err error) []*ce.ValidationError {
+func Parse(err error) []*cerr.ValidationError {
 	ex := toMongoException(err)
 
 	switch ex.WriteConcernError.Code {

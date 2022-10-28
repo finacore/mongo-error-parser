@@ -10,12 +10,13 @@ import (
 )
 
 var e121_error = map[string]string{
-	"default":     "assets_test/e121_test.json",
-	"array":       "assets_test/e121_array_test.json",
-	"reason":      "assets_test/e121_reason_test.json",
-	"description": "assets_test/e121_description_test.json",
-	"3_errors":    "assets_test/e121_3_test.json",
-	"4_errors":    "assets_test/e121_4_test.json",
+	"default":      "assets_test/e121_test.json",
+	"array":        "assets_test/e121_array_test.json",
+	"reason":       "assets_test/e121_reason_test.json",
+	"multi_reason": "assets_test/e121_multi_reason_test.json",
+	"description":  "assets_test/e121_description_test.json",
+	"3_errors":     "assets_test/e121_3_test.json",
+	"4_errors":     "assets_test/e121_4_test.json",
 }
 
 func read_errors_e121(f string) []byte {
@@ -91,33 +92,66 @@ func TestE121_addError(t *testing.T) {
 	assert.Len(t, e121.Errors, 1)
 }
 
+// func TestE121_getReason(t *testing.T) {
+// 	data := read_errors_e121("reason")
+// 	var root interface{}
+
+// 	json.Unmarshal(data, &root)
+
+// 	e121 := NewE121(root)
+// 	reason := e121.getReason()
+
+// 	assert.Equal(t, reason, "comparison failed")
+// }
+
 func TestE121_getReason(t *testing.T) {
-	data := read_errors_e121("reason")
-	var root interface{}
+	tests := []struct {
+		name string
+		file string
+		want []string
+	}{
+		{
+			name: "one_reason",
+			file: "reason",
+			want: []string{"comparison failed"},
+		},
+		{
+			name: "two_reason",
+			file: "multi_reason",
+			want: []string{"specified string length was not satisfied", "value was not found in enum"},
+		},
+	}
 
-	json.Unmarshal(data, &root)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			data := read_errors_e121(tt.file)
+			var root interface{}
 
-	e121 := NewE121(root)
-	reason := e121.getReason()
+			json.Unmarshal(data, &root)
 
-	assert.Equal(t, reason, "comparison failed")
+			e121 := NewE121(root)
+			reason := e121.getReason()
+
+			assert.Equal(t, reason, tt.want)
+		})
+	}
 }
 
 func TestE121_getErrorMessage(t *testing.T) {
 	tests := []struct {
 		name string
 		file string
-		want string
+		want []string
 	}{
 		{
 			name: "description",
 			file: "description",
-			want: "The value should be between 0 and 5",
+			want: []string{"The value should be between 0 and 5"},
 		},
 		{
 			name: "reason",
 			file: "reason",
-			want: "comparison failed",
+			want: []string{"comparison failed"},
 		},
 	}
 	for _, tt := range tests {
@@ -197,7 +231,7 @@ func TestE121_Run(t *testing.T) {
 		{
 			name: "4_errors",
 			file: "4_errors",
-			errs: 3,
+			errs: 4,
 		},
 	}
 	for _, tt := range tests {

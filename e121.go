@@ -1,7 +1,7 @@
 package mongoerrorparser
 
 import (
-	ce "github.com/finacore/commons-errors"
+	"github.com/gsdenys/cerr"
 )
 
 // E121 Error represents the model validation error, that occur when the scheme
@@ -12,7 +12,7 @@ import (
 // This data structure has as main objective to allows realize a breadth search
 // in this interface that is better described at method Run.
 type E121 struct {
-	Errors []*ce.ValidationError
+	Errors []*cerr.ValidationError
 	Runner []interface{}
 }
 
@@ -54,30 +54,21 @@ func (e *E121) addChildren() {
 
 // addError add a new error to the error array
 func (e *E121) addError(field string, message string) {
-	e.Errors = append(e.Errors, ce.CreateValidationError(field, message))
+	e.Errors = append(e.Errors, cerr.CreateValidationError(field, message))
 }
 
 // getReason returns the reason stored inside the details map. By now, this
 // function just accept one reason for each field.
-func (e *E121) getReason() string {
-
-	//
-	// TODO: This method accept just one error for each field, but mongo should
-	//       return more then one. (look assets_test/e121_4_test.json), so
-	//       this one should be refactored to better give an error response for
-	//       the user.
-	//
-
+func (e *E121) getReason() []string {
+	var reason []string
 	data := e.Runner[0].(map[string]interface{})
-
 	details := data["details"].([]interface{})
-	var reason string
 
 	for index := range details {
 		switch details[index].(type) {
 		case map[string]interface{}:
 			item := details[index].(map[string]interface{})
-			reason = item["reason"].(string)
+			reason = append(reason, item["reason"].(string))
 		}
 	}
 
@@ -88,11 +79,12 @@ func (e *E121) getReason() string {
 // priority is the message that the user has set to the mongodb in the moment of
 // create the constraint. In case of this not exist, the reason finding process
 // will be started
-func (e *E121) getErrorMessage(data map[string]interface{}) string {
+func (e *E121) getErrorMessage(data map[string]interface{}) []string {
 	description := data["description"]
 
 	if description != nil {
-		return description.(string)
+		var desc []string
+		return append(desc, description.(string))
 	}
 
 	return e.getReason()
@@ -109,7 +101,11 @@ func (e *E121) processInterface() {
 	if propertyName == nil {
 		e.addChildren()
 	} else {
-		e.addError(propertyName.(string), e.getErrorMessage(data))
+		msgs := e.getErrorMessage(data)
+
+		for i := range msgs {
+			e.addError(propertyName.(string), msgs[i])
+		}
 	}
 }
 
