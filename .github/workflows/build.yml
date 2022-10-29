@@ -59,6 +59,15 @@ jobs:
       with:
         go-version: ${{ matrix.goVersion }}
 
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.8.0
+      with:
+        mongodb-version: "6.0"
+        mongodb-port: 42069
+        mongodb-username: guest
+        mongodb-password: guest
+        mongodb-db: meparser
+
     - name: Test
       run: go test -v ./...
 
@@ -76,6 +85,15 @@ jobs:
         
       - name: Setup Go (latest)
         uses: actions/setup-go@v3
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: "6.0"
+          mongodb-port: 42069
+          mongodb-username: guest
+          mongodb-password: guest
+          mongodb-db: meparser
       
       - name: Run unity test
         run: |
