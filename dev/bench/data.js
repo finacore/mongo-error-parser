@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1666983015886,
+  "lastUpdate": 1667009899297,
   "repoUrl": "https://github.com/gsdenys/meparser",
   "entries": {
     "Benchmark": [
@@ -106,6 +106,42 @@ window.BENCHMARK_DATA = {
           {
             "name": "Benchmark_E121_Run",
             "value": 0.0001184,
+            "unit": "ns/op",
+            "extra": "1000000000 times\n2 procs"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gsdenys@gmail.com",
+            "name": "Denys G. Santos",
+            "username": "gsdenys"
+          },
+          "committer": {
+            "email": "gsdenys@gmail.com",
+            "name": "Denys G. Santos",
+            "username": "gsdenys"
+          },
+          "distinct": true,
+          "id": "a524a91bb95f0de66b3285863f51458f472a7bae",
+          "message": "try mongo at github actions",
+          "timestamp": "2022-10-28T22:15:01-04:00",
+          "tree_id": "eb3c4d8348c6dedf9702744c267eef2f643670e2",
+          "url": "https://github.com/gsdenys/meparser/commit/a524a91bb95f0de66b3285863f51458f472a7bae"
+        },
+        "date": 1667009898991,
+        "tool": "go",
+        "benches": [
+          {
+            "name": "Benchmark_E11000_Run",
+            "value": 0.0000454,
+            "unit": "ns/op",
+            "extra": "1000000000 times\n2 procs"
+          },
+          {
+            "name": "Benchmark_E121_Run",
+            "value": 0.0001026,
             "unit": "ns/op",
             "extra": "1000000000 times\n2 procs"
           }
