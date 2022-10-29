@@ -132,7 +132,7 @@ func Test_toMongoException(t *testing.T) {
 
 func Test_toErrorInterface(t *testing.T) {
 	c := prepare()
-	err := generate_index_error(c)
+	err := generate_scheme_error(c)
 
 	ex := toMongoException(err)
 	ei := toErrorInterface(ex)
