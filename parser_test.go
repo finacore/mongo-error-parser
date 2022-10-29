@@ -7,7 +7,6 @@ package meparser
 import (
 	"context"
 	"log"
-	"os"
 	"testing"
 
 	"github.com/google/uuid"
@@ -17,8 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// const uri = "mongodb://guest:guest@localhost:42069"
-var uri = os.Getenv("MONGOURI")
+const uri = "mongodb://guest:guest@localhost:42069"
 
 func create_unique_index(c *mongo.Collection) {
 	indexModel := mongo.IndexModel{
